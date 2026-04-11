@@ -1,0 +1,26 @@
+{
+  "contracts/1_Storage.sol": {
+    "__sources__": {
+      "contracts/1_Storage.sol": {
+        "content": "// SPDX-License-Identifier: GPL-3.0\n\npragma solidity >=0.8.2 <0.9.0;\n\n/**\n * @title Storage\n * @dev Store & retrieve value in a variable\n * @custom:dev-run-script ./scripts/deploy_with_ethers.ts\n */\ncontract Storage {\n\n    uint256 number;\n\n    /**\n     * @dev Store value in variable\n     * @param num value to store\n     */\n    function store(uint256 num) public {\n        number = num;\n    }\n\n    /**\n     * @dev Return value \n     * @return value of 'number'\n     */\n    function retrieve() public view returns (uint256){\n        return number;\n    }\n}",
+        "file": "contracts/1_Storage.sol"
+      }
+    }
+  },
+  "contracts/HelloWeb3.sol": {
+    "__sources__": {
+      "contracts/HelloWeb3.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract HelloWeb3 {\r\n    string public message;\r\n\r\n    constructor() {\r\n        message = \"Hello, Web3!\";\r\n    }\r\n\r\n    function setMessage(string memory newMessage) public  {\r\n        message = newMessage;\r\n    }\r\n\r\n    function getMessage() public view returns (string memory) {\r\n        return message;\r\n    }\r\n}",
+        "file": "contracts/HelloWeb3.sol"
+      }
+    }
+  },
+  "contracts/SimpleBank.sol": {
+    "__sources__": {
+      "contracts/SimpleBank.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract SimpleBank {\r\n\r\n    // Mapping: setiap address punya balance\r\n    mapping (address => uint256) private balances;\r\n\r\n    // Owner contract\r\n    address public owner;\r\n\r\n    // Event\r\n    event Deposit(address indexed user, uint256 amount);\r\n    event Withdraw(address indexed user, uint256 amount);\r\n\r\n    // Constructor\r\n    constructor() {\r\n        owner = msg.sender;\r\n    }\r\n\r\n    // Modifier\r\n    modifier onlyOwner() {\r\n        require(msg.sender == owner, \"Bukan owner!\");\r\n        _;\r\n    }\r\n\r\n    // Hanya owner yang bisa lihat total balance contract\r\n    function getContractBalance() public view onlyOwner returns (uint256) {\r\n        return address(this).balance;\r\n    }\r\n\r\n    // Deposit ETH ke Contract\r\n    function deposit() public payable {\r\n        require(msg.value > 0, \"Harus deposit lebih dari 0\");\r\n        balances[msg.sender] += msg.value;\r\n        emit Deposit(msg.sender, msg.value);\r\n    }\r\n\r\n    // Cek balance sendiri\r\n    function getBalance() public view returns (uint256) {\r\n        return balances[msg.sender];\r\n    }\r\n\r\n    // Withdraw ETH\r\n    function withdraw(uint256 amount) public {\r\n        require(balances[msg.sender] >= amount, \"Saldo tidak cukup\");\r\n        balances[msg.sender] -= amount;\r\n        (bool success, ) = payable(msg.sender).call{value: amount}(\"\");\r\n        require(success, \"Transfer gagal\");\r\n        emit Withdraw(msg.sender, amount);\r\n    }\r\n}",
+        "file": "contracts/SimpleBank.sol"
+      }
+    }
+  }
+}
