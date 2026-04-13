@@ -30,5 +30,13 @@
         "file": "contracts/MyToken.sol"
       }
     }
+  },
+  "contracts/MyNFT.sol": {
+    "__sources__": {
+      "contracts/MyNFT.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract MyNFT {\r\n    string public name;\r\n    string public symbol;\r\n    uint256 public tokenCounter;\r\n\r\n    mapping (address => mapping(address => bool)) private _operatorApprovals;\r\n    mapping (uint256 => address) private _owners;\r\n    mapping (address => uint256) private _balances;\r\n\r\n    constructor(string memory _name, string memory _symbol) {\r\n        name = _name;\r\n        symbol = _symbol;\r\n        tokenCounter = 0;\r\n    }\r\n\r\n    function mint (address to) public {\r\n        uint256 tokenID = tokenCounter;\r\n        _owners[tokenID] = to;\r\n        _balances[to] += 1;\r\n        tokenCounter += 1;\r\n    }\r\n\r\n    function ownerOf(uint256 tokenID) public view returns (address) {\r\n        address owner = _owners[tokenID];\r\n        require(owner != address(0), \"Token tidak exist\");\r\n        return owner;\r\n    }\r\n\r\n    function balanceOf(address owner) public view returns (uint256) {\r\n        return _balances[owner];\r\n    }\r\n\r\n    function transferFrom(address from, address to, uint256 tokenID) public {\r\n        require(\r\n            msg.sender == from || _operatorApprovals[from][msg.sender] == true, \"Tidak diizinkan\"\r\n            );\r\n        require(to != address(0), \"Alamat token tidak valid\");\r\n        _owners[tokenID] = to;\r\n        _balances[from] -= 1;\r\n        _balances[to] += 1;\r\n    }\r\n\r\n    function setApprovalForAll(address operator, bool approved) public {\r\n        _operatorApprovals[msg.sender][operator] = approved;\r\n    }\r\n}",
+        "file": "contracts/MyNFT.sol"
+      }
+    }
   }
 }
