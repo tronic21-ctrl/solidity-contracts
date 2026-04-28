@@ -23,19 +23,19 @@
       }
     }
   },
-  "contracts/SimpleBank.sol": {
-    "__sources__": {
-      "contracts/SimpleBank.sol": {
-        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract SimpleBank {\r\n\r\n    // Mapping: setiap address punya balance\r\n    mapping (address => uint256) private balances;\r\n\r\n    // Owner contract\r\n    address public owner;\r\n\r\n    // Event\r\n    event Deposit(address indexed user, uint256 amount);\r\n    event Withdraw(address indexed user, uint256 amount);\r\n\r\n    // Constructor\r\n    constructor() {\r\n        owner = msg.sender;\r\n    }\r\n\r\n    // Modifier\r\n    modifier onlyOwner() {\r\n        require(msg.sender == owner, \"Bukan owner!\");\r\n        _;\r\n    }\r\n\r\n    // Hanya owner yang bisa lihat total balance contract\r\n    function getContractBalance() public view onlyOwner returns (uint256) {\r\n        return address(this).balance;\r\n    }\r\n\r\n    // Deposit ETH ke Contract\r\n    function deposit() public payable {\r\n        require(msg.value > 0, \"Harus deposit lebih dari 0\");\r\n        balances[msg.sender] += msg.value;\r\n        emit Deposit(msg.sender, msg.value);\r\n    }\r\n\r\n    // Cek balance sendiri\r\n    function getBalance() public view returns (uint256) {\r\n        return balances[msg.sender];\r\n    }\r\n\r\n    // Withdraw ETH\r\n    function withdraw(uint256 amount) public {\r\n        require(balances[msg.sender] >= amount, \"Saldo tidak cukup\");\r\n        balances[msg.sender] -= amount;\r\n        (bool success, ) = payable(msg.sender).call{value: amount}(\"\");\r\n        require(success, \"Transfer gagal\");\r\n        emit Withdraw(msg.sender, amount);\r\n    }\r\n}",
-        "file": "contracts/SimpleBank.sol"
-      }
-    }
-  },
   "contracts/MyToken.sol": {
     "__sources__": {
       "contracts/MyToken.sol": {
         "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\n// Interface IERC20\r\ninterface IERC20 {\r\n    function totalSupply() external view returns (uint256);\r\n    function balanceOf(address account) external view returns (uint256);\r\n    function transfer(address to, uint256 amount) external returns (bool);\r\n    function allowance(address owner, address spender) external view returns (uint256);\r\n    function approve(address spender, uint256 amount) external returns (bool);\r\n    function transferFrom(address from, address to, uint256 amount) external returns (bool);\r\n}\r\n\r\ncontract MyToken is IERC20 {\r\n\r\n    string public name;\r\n    string public symbol;\r\n    uint8 public decimals;\r\n    uint256 private _totalSupply;\r\n\r\n    mapping(address => uint256) private _balances;\r\n    mapping(address => mapping(address => uint256)) private _allowance;\r\n\r\n    event Transfer(address indexed from, address indexed to, uint256 value);\r\n    event Approval(address indexed owner, address indexed spender, uint256 value);\r\n\r\n    constructor(string memory _name, string memory _symbol, uint256 initialSupply) {\r\n        name = _name;\r\n        symbol = _symbol;\r\n        decimals = 18;\r\n        _totalSupply = initialSupply * 10 ** uint256(decimals);\r\n        _balances[msg.sender] = _totalSupply;\r\n        emit Transfer(address(0), msg.sender, _totalSupply);\r\n    }\r\n\r\n    function totalSupply() external view returns (uint256) {\r\n        return _totalSupply;\r\n    }\r\n\r\n    function balanceOf(address account) external view returns (uint256) {\r\n        return _balances[account];\r\n    }\r\n\r\n    function transfer(address to, uint256 amount) external returns (bool) {\r\n        require(_balances[msg.sender] >= amount, \"Saldo tidak cukup\");\r\n        _balances[msg.sender] -= amount;\r\n        _balances[to] += amount;\r\n        emit Transfer(msg.sender, to, amount);\r\n        return true;\r\n    }\r\n\r\n    function allowance(address owner, address spender) external view returns (uint256) {\r\n        return _allowance[owner][spender];\r\n    }\r\n\r\n    function approve(address spender, uint256 amount) external returns (bool) {\r\n        _allowance[msg.sender][spender] = amount;\r\n        emit Approval(msg.sender, spender, amount);\r\n        return true;\r\n    }\r\n\r\n    function transferFrom(address from, address to, uint256 amount) external returns (bool) {\r\n        require(_balances[from] >= amount, \"Saldo tidak cukup\");\r\n        require(_allowance[from][msg.sender] >= amount, \"Allowance tidak cukup\");\r\n        _allowance[from][msg.sender] -= amount;\r\n        _balances[from] -= amount;\r\n        _balances[to] += amount;\r\n        emit Transfer(from, to, amount);\r\n        return true;\r\n    }\r\n}",
         "file": "contracts/MyToken.sol"
+      }
+    }
+  },
+  "contracts/OverflowDemo.sol": {
+    "__sources__": {
+      "contracts/OverflowDemo.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract OverflowDemo {\r\n    uint8 public myNumber = 255;\r\n    \r\n    function increment() public {\r\n        myNumber += 1;\r\n    }\r\n}",
+        "file": "contracts/OverflowDemo.sol"
       }
     }
   },
@@ -47,11 +47,19 @@
       }
     }
   },
-  "contracts/OverflowDemo.sol": {
+  "contracts/SimpleBank.sol": {
     "__sources__": {
-      "contracts/OverflowDemo.sol": {
-        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract OverflowDemo {\r\n    uint8 public myNumber = 255;\r\n    \r\n    function increment() public {\r\n        myNumber += 1;\r\n    }\r\n}",
-        "file": "contracts/OverflowDemo.sol"
+      "contracts/SimpleBank.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract SimpleBank {\r\n\r\n    // Mapping: setiap address punya balance\r\n    mapping (address => uint256) private balances;\r\n\r\n    // Owner contract\r\n    address public owner;\r\n\r\n    // Event\r\n    event Deposit(address indexed user, uint256 amount);\r\n    event Withdraw(address indexed user, uint256 amount);\r\n\r\n    // Constructor\r\n    constructor() {\r\n        owner = msg.sender;\r\n    }\r\n\r\n    // Modifier\r\n    modifier onlyOwner() {\r\n        require(msg.sender == owner, \"Bukan owner!\");\r\n        _;\r\n    }\r\n\r\n    // Hanya owner yang bisa lihat total balance contract\r\n    function getContractBalance() public view onlyOwner returns (uint256) {\r\n        return address(this).balance;\r\n    }\r\n\r\n    // Deposit ETH ke Contract\r\n    function deposit() public payable {\r\n        require(msg.value > 0, \"Harus deposit lebih dari 0\");\r\n        balances[msg.sender] += msg.value;\r\n        emit Deposit(msg.sender, msg.value);\r\n    }\r\n\r\n    // Cek balance sendiri\r\n    function getBalance() public view returns (uint256) {\r\n        return balances[msg.sender];\r\n    }\r\n\r\n    // Withdraw ETH\r\n    function withdraw(uint256 amount) public {\r\n        require(balances[msg.sender] >= amount, \"Saldo tidak cukup\");\r\n        balances[msg.sender] -= amount;\r\n        (bool success, ) = payable(msg.sender).call{value: amount}(\"\");\r\n        require(success, \"Transfer gagal\");\r\n        emit Withdraw(msg.sender, amount);\r\n    }\r\n}",
+        "file": "contracts/SimpleBank.sol"
+      }
+    }
+  },
+  "contracts/StackingContract.sol": {
+    "__sources__": {
+      "contracts/StackingContract.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract StakingContract {\r\n    address public owner;\r\n    // Token yang di-stake (pakai ETH langsung, tidak perlu ERC-20 dulu)\r\n    mapping(address => uint256) public stakedAmount;    // berapa ETH yang di-stake tiap user\r\n    mapping(address => uint256) public stakeTimestamp;  // kapan user mulai stake\r\n    uint256 public rewardRatePerSecond = 1;             // reward per detik (dalam wei)\r\n    uint256 public minimumStakePeriod = 60;             // minimum 60 detik sebelum bisa unstake\r\n    event Staked(address indexed user, uint256 amount);\r\n    event Unstaked(address indexed user, uint256 amount, uint256 reward);\r\n    function stake() public payable {\r\n    require(msg.value > 0, \"Harus stake lebih dari 0 ETH\");\r\n    require(stakedAmount[msg.sender] == 0, \"Sudah ada stake aktif\");\r\n    \r\n    stakedAmount[msg.sender] = msg.value;\r\n    stakeTimestamp[msg.sender] = block.timestamp;\r\n    \r\n    emit Staked(msg.sender, msg.value);\r\n}\r\n\r\nfunction calculateReward(address user) public view returns (uint256) {\r\n    if (stakedAmount[user] == 0) return 0;\r\n    \r\n    uint256 duration = block.timestamp - stakeTimestamp[user];\r\n    return duration * rewardRatePerSecond;\r\n}\r\n\r\nfunction unstake() public {\r\n    require(stakedAmount[msg.sender] > 0, \"tidak ada stake aktif\");\r\n    require(\r\n        block.timestamp >= stakeTimestamp[msg.sender] + minimumStakePeriod,\r\n        \"minimum stake period belum tercapai\"\r\n    );\r\n\r\n    uint256 amount = stakedAmount[msg.sender];\r\n    uint256 reward = calculateReward(msg.sender);\r\n\r\n    stakedAmount[msg.sender] = 0;\r\n    stakeTimestamp[msg.sender] = 0;\r\n\r\n    (bool success, ) = payable(msg.sender).call{value: amount + reward}(\"\");\r\n    require(success, \"Transfer gagal\");\r\n    \r\n    emit Unstaked(msg.sender, amount, reward);\r\n}\r\n\r\nfunction getStakeInfo(address user) public view returns (\r\n    uint256 amount,\r\n    uint256 timestamp,\r\n    uint256 duration,\r\n    uint256 reward\r\n) {\r\n    amount = stakedAmount[user];\r\n    timestamp = stakeTimestamp[user];\r\n    duration = timestamp > 0 ? block.timestamp - timestamp : 0;\r\n    reward = calculateReward(user);\r\n}\r\n    \r\n    constructor() {\r\n        owner = msg.sender;\r\n    }\r\n}\r\n\r\n",
+        "file": "contracts/StackingContract.sol"
       }
     }
   }
