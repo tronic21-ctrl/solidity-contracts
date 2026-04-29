@@ -197,6 +197,10 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
 			}
 		],
 		"devdoc": {
@@ -227,11 +231,11 @@
 	},
 	"sources": {
 		"contracts/StackingContract.sol": {
-			"keccak256": "0xe47878d24e5bdcc90f8e2240c1558ab08fbd842069214a7a74e1e14ce3911ccc",
+			"keccak256": "0x835a12a31f3d2fa62e12116941e5bb9963bd3ba6909f182459389a6f6bca9e81",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://739b8e559efa56dba8cdc54be937b4ac42d5915f67db92621e9bf205e072381b",
-				"dweb:/ipfs/QmS8xLvp4eLyeZvieg9WT88dHkvMWJe3DgfviCuX4cuxYT"
+				"bzz-raw://6e5e064291e9993a22013b66e7e334f07e81c76a91b931fe5e81a4d63fc0752e",
+				"dweb:/ipfs/Qma7pmiDFKZV31sfuCn48GUj6DNaYNYiYg9ibmTco4YZKX"
 			]
 		}
 	},

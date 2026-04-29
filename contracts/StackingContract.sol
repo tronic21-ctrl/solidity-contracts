@@ -61,5 +61,7 @@ function getStakeInfo(address user) public view returns (
     constructor() {
         owner = msg.sender;
     }
+
+receive() external payable {}
 }
 
