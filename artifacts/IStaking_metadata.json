@@ -1,0 +1,80 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					}
+				],
+				"name": "getStakeInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "duration",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reward",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/StakingGovernance.sol": "IStaking"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/StakingGovernance.sol": {
+			"keccak256": "0xd34ef27ef759c3c5e79870d63cfa682d75aa2fe61668697cc7bbeaa2f5311a2e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a69690095550edcc49e87d53dc2c3f0e17d82c3d6ba5242c4d4e6f8ad5cf024f",
+				"dweb:/ipfs/QmTcTbv3QQrLBiF6JvWbmNqXNddUdvPb83GtBR2RPEwxrH"
+			]
+		}
+	},
+	"version": 1
+}
