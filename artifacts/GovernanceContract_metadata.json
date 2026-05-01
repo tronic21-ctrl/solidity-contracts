@@ -65,6 +65,25 @@
 					},
 					{
 						"indexed": false,
+						"internalType": "uint256",
+						"name": "executeAfter",
+						"type": "uint256"
+					}
+				],
+				"name": "ProposalQueued",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "proposalId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
 						"internalType": "address",
 						"name": "voter",
 						"type": "address"
@@ -270,8 +289,53 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "proposalId",
+						"type": "uint256"
+					}
+				],
+				"name": "queueProposal",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "queuedAt",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "quorumPercentage",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "timelockDuration",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -342,11 +406,11 @@
 	},
 	"sources": {
 		"contracts/GovernanceContract.sol": {
-			"keccak256": "0x01b2d406e0e28ec90bb46173682946fd999b6cb65eb58dd3788869aa1e20d1a4",
+			"keccak256": "0x27bd76c3b6b5eae8e4ce362a4735f398209e7ca985c0533e611064670f1685ab",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://7990877c6fbaf7f34629494af8c8fbd01420537a817c733cdfdf370c336e0990",
-				"dweb:/ipfs/QmTuH4suof7AL2oNXoPcDFF5Dy5Wrzb3P6FKeDkKub6u9k"
+				"bzz-raw://0564b337f079bd178a982d4eda07ee5e3ad330f9402349654f7236947155bf35",
+				"dweb:/ipfs/QmahCGHEHEg579jSGzAH2SQ4CQzcVNNzFLqhbZ6GShe12L"
 			]
 		}
 	},

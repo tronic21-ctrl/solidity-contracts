@@ -6,6 +6,8 @@ contract GovernanceContract {
     uint256 public proposalCount;
     uint256 public votingDuration = 300; // 5 menit untuk testing
     uint256 public quorumPercentage = 51; // minimal 51% untuk lolos
+    uint256 public timelockDuration = 120; // 2 menit untuk testing
+    mapping(uint256 => uint256) public queuedAt; // kapan proposal di-queue
 
     struct Proposal {
     uint256 id;
@@ -24,6 +26,7 @@ mapping(uint256 => mapping(address => bool)) public hasVoted;
 event ProposalCreated(uint256 id, address proposer, string description);
 event Voted(uint256 proposalId, address voter, bool support);
 event ProposalExecuted(uint256 proposalId, bool passed);
+event ProposalQueued(uint256 proposalId, uint256 executeAfter);
 
 function createProposal(string memory description) public returns (uint256) {
     proposalCount++;
@@ -61,21 +64,42 @@ function vote(uint256 proposalId, bool support) public {
     emit Voted(proposalId, msg.sender, support);
 }
 
-function executeProposal(uint256 proposalId) public {
+function queueProposal(uint256 proposalId) public {
     Proposal storage proposal = proposals[proposalId];
-    
+
+    require(proposal.id != 0, "Proposal tidak ada");
     require(block.timestamp >= proposal.deadline, "Voting belum berakhir");
     require(!proposal.executed, "Sudah dieksekusi");
-    require(proposal.id != 0, "Proposal tidak ada");
-    
+    require(queuedAt[proposalId] == 0, "Sudah di-queue");
+
     uint256 totalVotes = proposal.yesVotes + proposal.noVotes;
     require(totalVotes > 0, "Tidak ada yang vote");
-    
+
     uint256 yesPercentage = (proposal.yesVotes * 100) / totalVotes;
-    
+    require(yesPercentage >= quorumPercentage, "Proposal tidak lolos vote");
+
+    queuedAt[proposalId] = block.timestamp;
+
+    emit ProposalQueued(proposalId, block.timestamp + timelockDuration);
+}
+
+function executeProposal(uint256 proposalId) public {
+    Proposal storage proposal = proposals[proposalId];
+
+    require(proposal.id != 0, "Proposal tidak ada");
+    require(!proposal.executed, "Sudah dieksekusi");
+    require(queuedAt[proposalId] != 0, "Proposal belum di-queue");
+    require(
+        block.timestamp >= queuedAt[proposalId] + timelockDuration,
+        "Timelock belum selesai"
+    );
+
+    uint256 totalVotes = proposal.yesVotes + proposal.noVotes;
+    uint256 yesPercentage = (proposal.yesVotes * 100) / totalVotes;
+
     proposal.executed = true;
     proposal.passed = yesPercentage >= quorumPercentage;
-    
+
     emit ProposalExecuted(proposalId, proposal.passed);
 }
 
