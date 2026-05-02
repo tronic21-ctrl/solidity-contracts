@@ -26,3 +26,12 @@ Output from script will appear in remix terminal.
 Please note, require/import is supported in a limited manner for Remix supported modules.
 For now, modules supported by Remix are ethers, swarmgw, chai, multihashes, remix and hardhat only for hardhat.ethers object/plugin.
 For unsupported modules, an error like this will be thrown: '<module_name> module require is not supported by Remix IDE' will be shown.
+
+## SimpleUpgradeable (UUPS Pattern)
+- Pattern: OpenZeppelin UUPS v5 (ERC1967)
+- Environment: Remix OZ Workspace (terpisah)
+- Deploy: Sepolia Testnet
+  - Logic Contract: 0x7969Db185A4d4CC1fe9aBdF31Ebd3709F4EcaFD4
+  - ERC1967 Proxy:  0xf12d2681C81A3A38D6DA1fdA452630CC1307Ee19
+- Stack: OpenZeppelin Contracts Upgradeable v5
+- Features: setValue, getValue, version, _authorizeUpgrade (onlyOwner)
