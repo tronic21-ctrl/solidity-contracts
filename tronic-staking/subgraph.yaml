@@ -1,0 +1,29 @@
+specVersion: 1.3.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: StakingContract
+    network: sepolia
+    source:
+      address: "0x1535313f07d9f74db435da3640aed6add7b81201"
+      abi: StakingContract
+      startBlock: 10753639
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Staked
+        - Unstaked
+      abis:
+        - name: StakingContract
+          file: ./abis/StakingContract.json
+      eventHandlers:
+        - event: Staked(indexed address,uint256)
+          handler: handleStaked
+        - event: Unstaked(indexed address,uint256,uint256)
+          handler: handleUnstaked
+      file: ./src/staking-contract.ts
